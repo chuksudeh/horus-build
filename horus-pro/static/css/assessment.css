@@ -1,0 +1,133 @@
+/*=================================================================
+  @media screen 2560px
+==================================================================*/
+@media screen and (max-width: 2560px) {
+  
+  .count {
+    border-radius: 3%;
+    display: inline-block;
+    height: 30px;
+    border: 2px solid black;
+    width: 30px;
+  }
+  .question {
+    /* margin-top: 74px; */
+  }
+  .font {
+    color: black !important;
+    font-family: poppins !important;
+    font-size: 18px !important;
+  }
+  .fontt {
+    color: black !important;
+    font-family: poppins !important;
+    font-size: 25px !important;
+    font-weight: bold !important;
+  }
+  /* .container {
+  height: 400px;
+} */
+  .presentation-button {
+    border-radius: 25px;
+    height: 40px;
+    width: 257px;
+    color: white;
+    font-family: poppins;
+    font-size: 26px;
+  }
+
+  .check {
+    font-size: 52px;
+    /* color: gray; */
+  }
+  .gray {
+    /* color: gray; */
+    font-weight: bold;
+    /* margin-top: 30px; */
+  }
+  .__margin {
+    margin-left: -96px;
+  }
+  .margin2 {
+    /* margin-top: -50px !important; */
+  }
+  .des-btn {
+    border-radius: 25px;
+    height: 40px;
+    background: #400080;
+  }
+  .top-margin {
+    margin-top: 10px !important;
+    font-size: 50px;
+  }
+  .next {
+    /* margin-top: -42px; */
+  }
+  .font3 {
+    /* margin-top: 80px; */
+    margin-left: 145px;
+    color: #fff;
+    font-family: poppins;
+    font-size: 38px;
+  }
+
+  .font2 {
+    /* margin-top: -18px; */
+    margin-left: 145px;
+    color: white;
+    font-family: poppins;
+    font-weight: bold;
+    font-size: 30px;
+  }
+
+  .header {
+    height: 200px;
+    width: 126.5%;
+    background-image: linear-gradient(320deg, #bf1752, #2e3192);
+    display: inline-block;
+    margin-left: -251px;
+  }
+
+  .mt-55 {
+    /* margin-top: 59px; */
+    margin-left: -100px;
+    margin-top: 30px;
+  }
+  .mt-4 {
+    /* margin-top: 35px; */
+  }
+  .__btn {
+    border-radius: 43px;
+    width: 117px;
+    font-size: 19px;
+    color: #9c85d7;
+    background: purple;
+    font-family: poppins;
+  }
+  .__btnn {
+    border-radius: 43px;
+    width: 143px;
+    font-size: 19px;
+    color: #9c85d7;
+    background: purple;
+    font-family: poppins;
+  }
+}
+
+/* .margin{
+  margin-left: 348px;
+} */
+
+/*=================================================================
+  @media screen 800px
+==================================================================*/
+
+/* @media screen and (max-width: 800px) {
+  .font {
+    font-size: 12px !important;
+  }
+
+  .__whycho {
+    margin-top: 19% !important;
+  }
+} */
