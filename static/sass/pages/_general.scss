@@ -1,0 +1,86 @@
+/*
+Feel the beauty of SASS :-)
+General Style Rules
+*/
+
+@import '../utils/mixins';
+@import '../utils/vars';
+
+html, body {
+	width: 100%;
+	height: 100%;
+	color: $black;
+	background-color: $bg;
+
+	* {
+		font-family: Raleway, sans-serif;
+
+		&.z-depth-1 {
+			box-shadow: rgba(0, 0, 0, 0.098) 0px 4px 14px !important;
+		}
+
+		&.number {
+			font-family: 'Open Sans', Raleway, sans-serif !important;
+		}
+
+		&::-webkit-scrollbar {
+			width: 7px;
+			height: 7px;
+			border-radius: 15px;
+		}
+		
+		&::-webkit-scrollbar-track {
+			border-radius: 15px;
+			background-color: transparent;
+		}
+		
+		&::-webkit-scrollbar-thumb {
+			border-radius: 15px;
+			background-color: $blue;
+		}
+	}
+
+	> div {
+		width: 100%;
+		height: 100%;
+
+		> div {
+			position: relative;
+			min-height: 100%;
+			height: auto;
+			width: 100%;
+
+			&:not(.auth){
+				margin-left: 250px !important;
+				width: calc(100% - 250px);
+
+				@include mQ(992px){
+					margin-left: 45px !important;
+					width: calc(100% - 45px);
+				}
+
+				&.inprogress {
+					background-color: $yellow;
+				}
+			}
+
+			> .content {
+				padding: 40px;
+				min-height: 100%;
+				height: auto;
+
+				@include mQ(600px){
+					padding: 30px;
+				}
+
+				&.inprogress {
+					background-color: $yellow;
+				}
+
+				&.total {
+					background-color: $green;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,156 @@
+/*
+Dashboard Page
+*/
+
+.dashboard {
+	.content {
+		.col {
+			padding: 0 20px;
+
+			.summary {
+				margin: 0;
+
+				.col {
+					padding: 0 5px;
+
+					.card {
+						padding: 10px 20px;
+						display: flex;
+						align-items: center;
+						justify-content: space-around;
+						background-color: $white;
+						border-radius: 10px;
+						cursor: pointer;
+
+						.icon {
+							border-radius: 5px;
+							padding: 10px;
+							margin-right: 10px;
+
+							img {
+								width: 35px;
+							}
+						}
+
+						.text {
+							h4 {
+								margin: 0
+							}
+
+							h6 {
+								margin: {
+									top: 5px;
+									bottom: 0;
+								}
+								font-size: 15px;
+								text-overflow: ellipsis;
+								word-break: keep-all;
+							}
+						}
+					}
+
+					&:first-child {
+						padding-left: 0;
+
+						.icon {
+							background-color: $authBg;
+						}
+					}
+
+					&:nth-child(2) .icon {
+						background-color: $yellow;
+					}
+
+					&:nth-child(3) .icon {
+						background-color: $green;
+					}
+
+					&:last-child {
+						padding-right: 0;
+
+						.icon {
+							background-color: $red;
+						}
+					}
+				}
+			}
+
+			.curr-projects, .up-projects {
+				margin: 20px 0;
+				border-radius: 5px;
+				width: 100%;
+				overflow: hidden;
+				
+				td {
+					padding: 15px !important;
+					border: none !important;
+				}
+
+				thead {
+					background-color: $blue;
+					color: $white;
+					font-weight: 600;
+				}
+
+				tbody {
+					background-color: $white;
+
+					tr {
+						transition: all .5s;
+						border-bottom: 1px solid $bg;
+
+						&:hover {
+							background-color: $lightBlue;
+						}
+
+						td {
+							&.completed {
+								color: $green;
+							}
+
+							&.in-progress {
+								color: $blue;
+							}
+
+							&.cancelled {
+								color: $red;
+							}
+
+							&.pending {
+								color: $yellow;
+							}
+
+							& > .up-flex {
+								display: flex;
+								align-items: center;
+								justify-content: flex-start;
+
+								.avatar {
+									background-color: darken($lightBlue, 10%);
+									height: 45px;
+									width: 45px;
+									border-radius: 50%;
+									margin-right: 20px;
+								}
+
+								.title {
+									h6 {
+										margin: 0;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			.more p {
+				text-align: right;
+
+				a {
+					color: $black;
+				}
+			}
+		}
+	}
+}
