@@ -81,18 +81,19 @@
                       <input
                         type="text"
                         v-model="firstName"
-                        class="form-control"
+                        class="form-control control has-icon has-icon-right"
                         id
+                        name="firstName"
                         placeholder="First Name"
-                        v-model.trim="firstName"
-                        @input="setFirst($event.target.value)"
+                        v-validate="'required|alpha'"
+                        :class="{'input': true, 'is-danger': errors.has('firstName') }"
                       >
                     </div>
-                    <div class="error" v-if="!$v.firstName.required">Field is required</div>
-                    <div
-                      class="error"
-                      v-if="!$v.firstName.minLength"
-                    >First Name must have at least {{$v.firstName.$params.minLength.min}} letters.</div>
+                    <i v-show="errors.has('firstName')" class="fa fa-warning"></i>
+                    <span
+                      v-show="errors.has('firstName')"
+                      class="help is-danger"
+                    >{{ errors.first('firstName') }}</span>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="form-group __form-group">
@@ -101,17 +102,18 @@
                       <input
                         type="text"
                         v-model="lastName"
-                        class="form-control"
-                        id
+                        class="form-control has-icon has-icon-right"
+                        name="lastName"
                         placeholder="Last Name"
-                        v-model.trim="$v.lastName.$model"
+                        v-validate="'required|alpha'"
+                        :class="{'input': true, 'is-danger': errors.has('lastName') }"
                       >
                     </div>
-                    <div class="error" v-if="!$v.lastName.required">Field is required</div>
-                    <div
-                      class="error"
-                      v-if="!$v.lastName.minLength"
-                    >Last Name must have at least {{$v.lastName.$params.minLength.min}} letters.</div>
+                    <i v-show="errors.has('lastName')" class="fa fa-warning"></i>
+                    <span
+                      v-show="errors.has('lastName')"
+                      class="help is-danger"
+                    >{{ errors.first('lastName') }}</span>
                   </div>
                 </div>
 
@@ -121,12 +123,19 @@
                       <span class="font">Email</span>
                       
                       <input
-                        type="email"
+                        name="email"
                         v-model="email"
+                        v-validate="'required|email'"
                         class="form-control"
-                        id
+                        :class="{'input': true, 'is-danger': errors.has('email') }"
+                        type="text"
                         placeholder="Email"
                       >
+                      <i v-show="errors.has('email')" class="fa fa-warning"></i>
+                      <span
+                        v-show="errors.has('email')"
+                        class="help is-danger"
+                      >{{ errors.first('email') }}</span>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6">
@@ -134,12 +143,20 @@
                       <span class="font">Phone Number</span>
                       
                       <input
-                        type="number"
+                        type="text"
                         v-model="phoneNumber"
                         class="form-control"
+                        name="phoneNumber"
                         id
                         placeholder="Phone Number"
+                        v-validate="'required|numeric'"
+                        :class="{'input': true, 'is-danger': errors.has('phoneNumber') }"
                       >
+                      <i v-show="errors.has('phoneNumber')" class="fa fa-warning"></i>
+                      <span
+                        v-show="errors.has('phoneNumber')"
+                        class="help is-danger"
+                      >{{ errors.first('phoneNumber') }}</span>
                     </div>
                   </div>
                 </div>
@@ -150,12 +167,20 @@
                       <span class="font">I am a</span>
                       <br>
 
-                      <select name="category" class="form-control" v-model="category">
+                      <select
+                        name="category"
+                        class="form-control"
+                        v-model="category"
+                        v-validate="'required'"
+                        required
+                      >
                         <option
                           v-for="(category, index) in categories"
                           :key="`category-${index}`"
+                          :has-error="errors.has('category')"
                         >{{ category }}</option>
                       </select>
+                      <span v-show="errors.has('category')">{{ errors.first('category') }}</span>
                     </div>
                   </div>
 
@@ -164,22 +189,41 @@
                       <span class="font">Stack</span>
                       <br>
                       <div v-if="category == 'Developer'">
-                        <select class="form-control" v-model="stack" :disabled="!category">
+                        <select
+                          name="developerStack"
+                          class="form-control"
+                          v-model="stack"
+                          :disabled="!category"
+                          v-validate="'required'"
+                          required
+                        >
                           <option
                             v-for="(stack,index) in this.developerStack"
                             :key="`stack-${index}`"
                             v-bind:value="{id:stack.id, name: stack.name}"
                           >{{stack.name}}</option>
                         </select>
+                        <span
+                          v-show="errors.has('developerStack')"
+                        >{{ errors.first('developerStack') }}</span>
                       </div>
                       <div v-else>
-                        <select class="form-control" v-model="stack">
+                        <select
+                          class="form-control"
+                          name="designerStack"
+                          v-model="stack"
+                          v-validate="'required'"
+                          required
+                        >
                           <option
                             v-for="(stack,index) in this.designerStack"
                             :key="`stack-${index}`"
                             v-bind:value="stack.id"
                           >{{stack.name}}</option>
                         </select>
+                        <span
+                          v-show="errors.has('designerStack')"
+                        >{{ errors.first('designerStack') }}</span>
                       </div>
                     </div>
                   </div>
@@ -198,6 +242,7 @@
                       <br>
                       <input
                         type="text"
+                        name="others"
                         class="form-control"
                         v-model="others"
                         placeholder="Please Specify"
@@ -213,12 +258,16 @@
                         class="form-control"
                         v-model="difficultyHorus"
                         style="display: inline-block"
+                        v-validate="'required'"
                       >
                         <option
                           v-for="(difficultyHorus, index) in difficultiesHorus"
                           :key="`difficultyHorus-${index}`"
                         >{{ difficultyHorus }}</option>
                       </select>
+                      <span
+                        v-show="errors.has('difficultyHorus')"
+                      >{{ errors.first('difficultyHorus') }}</span>
                     </div>
                   </div>
                 </div>
@@ -233,12 +282,18 @@
                   <div class="col-lg-4 col-md-4 col-sm-4">
                     <div class="form-group">
                       <span for="country" class="font">Country</span>
-                      <select name="country" v-model="country" class="form-control __width">
+                      <select
+                        name="country"
+                        v-model="country"
+                        class="form-control __width"
+                        v-validate="'required'"
+                      >
                         <option
                           v-for="(country, index) in countries"
                           :key="`country-${index}`"
                         >{{ country }}</option>
                       </select>
+                      <span v-show="errors.has('country')">{{ errors.first('country') }}</span>
                     </div>
                   </div>
                   <div class="col-lg-4 col-md-4 col-sm-4">
@@ -248,18 +303,38 @@
                         type="text"
                         v-model="state"
                         class="form-control"
-                        id
+                        name="state"
                         placeholder="State"
+                        v-validate="'required|alpha'"
+                        :class="{'input': true, 'is-danger': errors.has('state') }"
                       >
                     </div>
+                    <i v-show="errors.has('state')" class="fa fa-warning"></i>
+                    <span
+                      v-show="errors.has('state')"
+                      class="help is-danger"
+                    >{{ errors.first('state') }}</span>
                   </div>
 
                   <div class="col-lg-4 col-md-4 col-sm-4">
                     <div class="form-group">
                       <span class="font">City</span>
                       
-                      <input type="text" class="form-control" v-model="city" placeholder="City">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="city"
+                        v-model="city"
+                        placeholder="City"
+                        v-validate="'required|alpha'"
+                        :class="{'input': true, 'is-danger': errors.has('city') }"
+                      >
                     </div>
+                    <i v-show="errors.has('city')" class="fa fa-warning"></i>
+                    <span
+                      v-show="errors.has('city')"
+                      class="help is-danger"
+                    >{{ errors.first('city') }}</span>
                   </div>
                 </div>
 
@@ -268,13 +343,19 @@
                     <div class="form-group">
                       <span class="font">Gender</span>
                       <br>
-                      <select name="gender" class="form-control __width" v-model="gender">
+                      <select
+                        name="gender"
+                        class="form-control __width"
+                        v-model="gender"
+                        v-validate="'required'"
+                      >
                         <option
                           v-for="(gender, index) in genders"
                           :key="`gender-${index}`"
                         >{{ gender }}</option>
                       </select>
                     </div>
+                    <span v-show="errors.has('gender')">{{ errors.first('gender') }}</span>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="form-group">
@@ -284,9 +365,17 @@
                         type="text"
                         class="form-control"
                         v-model="website"
+                        name="website"
                         placeholder="Website/Portfolio"
+                        v-validate="'required|alpha'"
+                        :class="{'input': true, 'is-danger': errors.has('website') }"
                       >
                     </div>
+                    <i v-show="errors.has('website')" class="fa fa-warning"></i>
+                    <span
+                      v-show="errors.has('website')"
+                      class="help is-danger"
+                    >{{ errors.first('website') }}</span>
                   </div>
                 </div>
 
@@ -304,6 +393,11 @@
                         placeholder="Resume"
                       >
                     </div>
+                    <i v-show="errors.has('file')" class="fa fa-warning"></i>
+                    <span
+                      v-show="errors.has('file')"
+                      class="help is-danger"
+                    >{{ errors.first('file') }}</span>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6 __br">
                     <div class="form-group">
@@ -322,11 +416,10 @@
 
                 <button
                   type="submit"
-                  :disabled="submitStatus === 'PENDING'"
                   class="btn __cartat"
                 >Take Assesment Test</button>
-                <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p>
-                <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p>
+                <!-- <p class="typo__p" v-if="submitStatus === 'ERROR'">Please fill the form correctly.</p> -->
+                <!-- <p class="typo__p" v-if="submitStatus === 'PENDING'">Sending...</p> -->
               </div>
             </form>
           </div>
@@ -664,26 +757,18 @@
           </div>
         </div>
       </div>
-      <div>
-    <b-button @click="modalShow = !modalShow">open modalShow</b-button>
-
-    <b-modal v-model="firstName">Hello From Modal!</b-modal>
-  </div>
     </footer>
   </div>
-  
 </template>
 
 <script>
-
-import '../../static/libraries/bootstrap/js/bootstrap.min.js'
+// import '../../static/libraries/bootstrap/js/bootstrap.min.js'
 import axios from "axios";
 import constants from "./includes/constants.js";
 const { API_URL } = constants;
 // import Vue from "vue";
 // import Vuex from "vuex";
 import { countries } from "../shared";
-import { required, minLength, between } from "vuelidate/lib/validators";
 
 export default {
   name: "career",
@@ -696,12 +781,12 @@ export default {
       category: "",
       difficulty: "",
       difficultiesHorus: [
-        "Cadet (1-3 Years)",
-        "Sergeant (4-5 Years)",
-        "Lieutenant (6-7 Years)",
-        "Major (8-9 Years)",
-        "General (10-11 Years)",
-        "Marshal (12-15 Years)"
+        "Cadet (0-1 Year)",
+        "Sergeant (2-3 Years)",
+        "Lieutenant (4-5 Years)",
+        "Major (6-7 Years)",
+        "General (8-9 Years)",
+        "Marshal (10+ Years)"
       ],
       difficulties: [
         "Cadet",
@@ -724,7 +809,7 @@ export default {
       region: "",
       state: "",
       city: "",
-      errors: [],
+      // errors: [],
       genders: ["Male", "Female"],
       gender: "",
       website: "",
@@ -734,29 +819,20 @@ export default {
       developerStack: [],
       designerStack: [],
       fd: "",
-      error: false,
       others: "",
       mainstack: "",
       submitStatus: null
     };
   },
-  validations: {
-    firstName: {
-      required,
-      minLength: minLength(4)
-    },
-    lastName: {
-      required,
-      minLength: minLength(4)
-    },
-    age: {
-      between: between(20, 30)
-    }
+  created() {
+    // this.$validator.extend("maxdimensions", maxDimensionsRule);
   },
   mounted() {
     let particles = document.createElement("script");
     particles.setAttribute("src", "../../static/js/js/particles.js");
     document.head.appendChild(particles);
+    sessionStorage.clear();
+
     // const userData = sessionStorage.getItem("userData");
     // // if (!userData) this.$router.push("/");
     // const { token } = JSON.parse(sessionStorage.userData);
@@ -792,36 +868,9 @@ export default {
             });
           }
         }
-
-        // this.subcategories.forEach(element => {
-
-        // });
       });
   },
   methods: {
-    setName(value) {
-      this.firstName = value;
-      this.$v.firstName.$touch();
-    },
-    checkForm: function(e) {
-      if (this.firstName) {
-        return true;
-      }
-
-      this.errors = [];
-
-      if (!this.firstName) {
-        this.errors.push("First Name required.");
-      }
-      if (!this.lastName) {
-        this.errors.push("Name required.");
-      }
-      // if (!this.age) {
-      //   this.errors.push('Age required.');
-      // }
-
-      e.preventDefault();
-    },
     uploadFile1(event) {
       this.selectedFile = event.target.files[0];
     },
@@ -832,62 +881,72 @@ export default {
       this.$router.push("/probody");
     },
     submitForm() {
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        this.submitStatus = "ERROR";
-      } else {
-        // do your submit logic here
-        const index = this.difficultiesHorus.indexOf(this.difficultyHorus);
-        this.difficulty = this.difficulties[index];
+      this.$validator.validateAll().then(result => {
+        if (result) {
+          // eslint-disable-next-line
+          // const file = this.$refs.file.files[0];
 
-        (this.$store.state.difficulty = this.difficulty),
-          (this.$store.state.category = this.category);
-        this.$store.state.stack = this.stack;
-        const { stack, category, difficulty } = this;
-        sessionStorage.setItem(
-          "assessment",
-          JSON.stringify({
-            stack,
-            category,
-            difficulty
-          })
-        );
+          // if (!file) {
+          //   e.preventDefault();
+          //   alert("No file chosen");
+          //   return;
+          // }
 
-        const fd = new FormData();
-        if (this.selectedFile) {
-          fd.append("cv", this.selectedFile);
+          // if (file.size > 1024 * 1024) {
+          //   e.preventDefault();
+          //   alert("File too big (> 1MB)");
+          //   return;
+          // }
+
+          // alert("File OK");
+          // do your submit logic here
+          const index = this.difficultiesHorus.indexOf(this.difficultyHorus);
+          this.difficulty = this.difficulties[index];
+
+          (this.$store.state.difficulty = this.difficulty),
+            (this.$store.state.category = this.category);
+          this.$store.state.stack = this.stack;
+          const { stack, category, difficulty } = this;
+          sessionStorage.setItem(
+            "assessment",
+            JSON.stringify({
+              stack,
+              category,
+              difficulty
+            })
+          );
+
+          const fd = new FormData();
+          if (this.selectedFile) {
+            fd.append("cv", this.selectedFile);
+          }
+          fd.append("fullname", this.firstName + this.lastName);
+          fd.append("email", this.email);
+          fd.append("phone", this.phoneNumber);
+          fd.append("expertise", this.category);
+          fd.append("external_url", this.website);
+          fd.append("profile_url", this.skype);
+          fd.append("country", this.country);
+          fd.append("state", this.state);
+          fd.append("city", this.city);
+          fd.append("tools", this.expertise);
+          fd.append("years_of_experience", this.difficultyHoruspos);
+          fd.append("approach", this.stack);
+          fd.append("gender", this.gender);
+          fd.append("difficulty", this.difficulty);
+
+          axios.post("https://www.findworka.com/pro/join", fd).then(res => {
+            // this.error = res.data.data.error
+          });
+          // this.submitStatus = "PENDING";
+          // setTimeout(() => {
+          //   this.submitStatus = "OK";
+          // }, 500);
+          this.$router.push("/develo");
         }
-        fd.append("fullname", this.firstName + this.lastName);
-        fd.append("email", this.email);
-        fd.append("phone", this.phoneNumber);
-        fd.append("expertise", this.category);
-        fd.append("external_url", this.website);
-        fd.append("profile_url", this.skype);
-        fd.append("country", this.country);
-        fd.append("state", this.state);
-        fd.append("city", this.city);
-        fd.append("tools", this.expertise);
-        fd.append("years_of_experience", this.difficultyHoruspos);
-        fd.append("approach", this.stack);
-        fd.append("gender", this.gender)
-        fd.append("difficulty", this.difficulty)
-
-      
-
-        axios.post("https://www.findworka.com/pro/join", fd).then(res => {
-          this.error = res.data.data.error
-        });
-        this.submitStatus = "PENDING";
-        setTimeout(() => {
-          this.submitStatus = "OK";
-        }, 500);
-      }
-        if(this.error = true){
-          
-        }
-        else
-        this.$router.push("/devassessment");
-      
+        // alert("Form Submitted!");
+        return;
+      });
     }
   }
 };

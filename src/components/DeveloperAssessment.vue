@@ -3,7 +3,7 @@
     <div class="header">
       <div class="container mt-5">
         <div class="row">
-          <div class="col-lg-6 col-md-6 col-sm-6">
+          <div class="col-lg-6 col-md-6 col-sm-6">08167219276
             <span class="font3">{{category}} Assessment</span>
             <br>
             <span class="font2">
@@ -36,16 +36,12 @@
       
      
       <div>
-        <div class="question" v-for="(question, i) in questions" :key="i">
+        <div class="question" v-for="(question, i) in questions" :key="i">        
+          <span class="font-b" v-html="questions[0].question"></span>
           
-          
-          <span class="font-b" v-html="questions[selectedQuestion].question"></span>
-    
-          
-            <p>          <br> -->
-
-              <input value="" type="radio" name="num" @click="score('A', question.id)">
-              <span class="font">{{ questions[selectedQuestion].optionA }}</span>
+            <p v-for="(que, j) in questions[0].options" :key="j">  
+              <input v-model="questions[0].answer" :value="que.value" type="radio" name="num" @click="score(que.value, questions[0].id)">
+              <span class="font">{{ que.text }}</span>
             </p>
             <br>
             <!-- <p>
@@ -160,7 +156,7 @@ export default {
       }
     }, 1000);
   },
-  mounted() {
+  async mounted() {
     let timer = setInterval(() => {
       let { minute, second } = this;
 
@@ -187,17 +183,46 @@ export default {
     this.stack = state.stack || stack;
     this.category = state.category || category;
     this.difficulty = state.difficulty || difficulty;
+    
+    let newQuestionArray = [];
 
-    axios
+    let res = await axios
       .post(`${API_URL}/assessment/gquestions`, {
         testId: this.stack.id,
         difficulty: this.difficulty,
         category: this.category
-      })
-      .then(res => {
-        this.questions = res.data.data;
-        this.questionId = this.questions[0].id;
       });
+      this.questions = res.data.data;
+      for(let i = 0; i < this.questions.length; i++) {
+        let question = this.questions[i];
+        question.answer = '';
+        question.options = [
+          {
+            value: 'A',
+            text: this.questions[i].optionA
+          },
+          {
+            value: 'B',
+            text: this.questions[i].optionB
+          },
+          {
+            value: 'C',
+            text: this.questions[i].optionA
+          },
+          {
+            value: 'D',
+            text: this.questions[i].optionB
+          }
+        ];
+        
+        //push to new Array
+        newQuestionArray.push(question);
+      }
+      // console.log('Questions', this.questions);
+      // console.log('New Questions', newQuestionArray);
+      this.questions = newQuestionArray;
+      this.questionId = this.questions[0].id;
+    
   },
   methods: {
     timeUp() {
@@ -250,24 +275,28 @@ export default {
       }
     },
     score: function(option, id) {
-      let found = this.userAnswers.find(answer => {
-        return answer.questions_id === id;
+      let found = this.questions.find((question, i) => {
+        if(question.id === id) {
+          question.answer = option;
+          console.log('Question with answer', question);
+          console.log('All Questions', this.questions);
+        }
       });
 
-      if (found) {
-        this.userAnswers[this.userAnswers.indexOf(found)] = {
-          questions_id: id,
-          option: option
-        };
+      // if (found) {
+      //   this.userAnswers[this.userAnswers.indexOf(found)] = {
+      //     questions_id: id,
+      //     option: option
+      //   };
 
-        // sessionStorage.setItem("userAnswers", JSON.stringify(this.userAnswers));
-      } else {
-        this.userAnswers.push({
-          questions_id: id,
-          option: option
-        });
-        sessionStorage.setItem("userAnswers", JSON.stringify(this.userAnswers));
-      }
+      //   // sessionStorage.setItem("userAnswers", JSON.stringify(this.userAnswers));
+      // } else {
+      //   this.userAnswers.push({
+      //     questions_id: id,
+      //     option: option
+      //   });
+      //   sessionStorage.setItem("userAnswers", JSON.stringify(this.userAnswers));
+      // }
     },
     submit: function() {
       this.$store.state.userAnswers = this.userAnswers;

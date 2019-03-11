@@ -30,6 +30,7 @@
   }
   .question {
     margin-top: 74px;
+    display: none;
   }
   .font {
     color: black !important;
@@ -87,8 +88,7 @@
   }
 
   .font2 {
-    /* margin-top: -18px; */
-    /* margin-left: 145px; */
+    margin-top: 5%;
     color: white;
     font-family: poppins;
     font-size: 25px;
